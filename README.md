@@ -9,8 +9,15 @@
 * swallow
 * vanitygaps
 
-## Emoji support
-For emoji support install libxft with the bgra patch.
+## Install
+```sh
+git clone https://gitlab.com/CamelCoder/dwm
+cd dwm
+sudo make clean install
+```
+
+## Color Emoji support
+For color emoji support install libxft with the bgra patch.
 
 ### On Arch based systems
 ```sh
@@ -29,12 +36,6 @@ git clone https://gitlab.com/zanc/xft
 sudo ldconfig && reboot
 ```
 
-## Install
-```sh
-git clone https://gitlab.com/CamelCoder/dwm
-cd dwm
-sudo make clean install
-```
 
 ## Statusbar
 The statusbar is can be configured using `xsetroot -name "..."`.
