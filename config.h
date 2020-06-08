@@ -45,7 +45,7 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 #include "vanitygaps.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
- 	{ "[]=",  tile },                   /* Default: Master on left, slaves on right */
+	{ "[]=",  tile },                   /* Default: Master on left, slaves on right */
 	{ "TTT",  bstack },                 /* Master on top, slaves on bottom */
 
 	{ "[@]",  spiral },                 /* Fibonacci spiral */
@@ -53,12 +53,12 @@ static const Layout layouts[] = {
 
 
 	{ "H[]",  deck },                   /* Master on left, slaves in monocle-like mode on right */
- 	{ "[M]",  monocle },                /* All windows on top of eachother */
+	{ "[M]",  monocle },                /* All windows on top of eachother */
 
 	{ "|M|",  centeredmaster },         /* Master in middle, slaves on sides */
-	{ ">M>",  centeredfloatingmaster }, /* Same but master floats */
 
 	{ "><>",  NULL },                   /* no layout function means floating behavior */
+	{ ">M>",  centeredfloatingmaster }, /* Same but master floats */
 };
 
 /* key definitions */
@@ -91,14 +91,15 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask, XK_x, spawn, SHCMD("xkill") },
 
 	/* layouts */
-	{ MODKEY|ControlMask,			XK_t,		setlayout,	{.v = &layouts[0]} }, /* tile */
-	{ MODKEY|ControlMask|ShiftMask,		XK_t,		setlayout,	{.v = &layouts[1]} }, /* bstack */
-	{ MODKEY|ControlMask,			XK_s,		setlayout,	{.v = &layouts[2]} }, /* spiral */
-	{ MODKEY|ControlMask|ShiftMask,		XK_s,		setlayout,	{.v = &layouts[3]} }, /* dwindle */
-	{ MODKEY|ControlMask,			XK_d,		setlayout,	{.v = &layouts[4]} }, /* deck */
-	{ MODKEY|ControlMask,		        XK_m,		setlayout,	{.v = &layouts[5]} }, /* monocle */
-	{ MODKEY|ControlMask,			XK_i,		setlayout,	{.v = &layouts[6]} }, /* centeredmaster */
-	{ MODKEY|ControlMask|ShiftMask,		XK_i,		setlayout,	{.v = &layouts[7]} }, /* centeredfloatingmaster */
+	{ MODKEY|ControlMask,           XK_t, setlayout, {.v = &layouts[0]} }, /* tile */
+	{ MODKEY|ControlMask,           XK_b, setlayout, {.v = &layouts[1]} }, /* bstack */
+	{ MODKEY|ControlMask,           XK_o, setlayout, {.v = &layouts[2]} }, /* spiral */
+	{ MODKEY|ControlMask|ShiftMask, XK_o, setlayout, {.v = &layouts[3]} }, /* dwindle */
+	{ MODKEY|ControlMask|ShiftMask,           XK_m, setlayout, {.v = &layouts[4]} }, /* deck */
+	{ MODKEY|ControlMask,           XK_m, setlayout, {.v = &layouts[5]} }, /* monocle */
+	{ MODKEY|ControlMask,           XK_i, setlayout, {.v = &layouts[6]} }, /* centeredmaster */
+	{ MODKEY|ControlMask,           XK_p, setlayout, {.v = &layouts[7]} }, /* centeredfloatingmaster */
+	{ MODKEY|ControlMask|ShiftMask, XK_p, setlayout, {.v = &layouts[8]} }, /* centeredfloatingmaster */
 
 	/* window manager */
 	{ MODKEY,           XK_b,     togglebar,      {0} },
