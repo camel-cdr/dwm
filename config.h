@@ -83,7 +83,6 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask, XK_Return, spawn, SHCMD("$TERMINAL") },
 	{ MODKEY,           XK_u,      spawn, SHCMD("dwm-samedir -c floating") },
 	{ MODKEY|ShiftMask, XK_u,      spawn, SHCMD("$TERMINAL -c floating") },
-	{ MODKEY,           XK_a,      spawn, SHCMD("$TERMINAL -e /bin/sh -c tmux attach -t \"`tmux ls | grep -o '^[^:]*' | dmenu`\"") },
 
 	{ MODKEY,           XK_w, spawn, SHCMD("$BROWSER") },
 	{ MODKEY,           XK_m, spawn, SHCMD("$CLIP") },
