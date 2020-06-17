@@ -1,11 +1,11 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;  /* border pixel of windows */
+static const unsigned int borderpx  = 3;  /* border pixel of windows */
 static const unsigned int snap      = 32; /* snap pixel */
 static const int swallowfloating    = 0;  /* 1 means swallow floating windows by default */
-static int enablegaps               = 1;  /* enables gaps, used by togglegaps */
-static const unsigned int gapp      = 10; /* gap between windows */
+static int enablegaps               = 0;  /* enables gaps, used by togglegaps */
+static const unsigned int gapp      = 15; /* gap between windows */
 static const unsigned int gapinc    = 5;  /* outer gap between windows and screen edge */
 static const int smartgaps          = 0;  /* no outer gap, untill there are 'smargaps' open windows */
 static const int showbar            = 1;  /* 0 means no bar */
@@ -55,6 +55,7 @@ static const Layout layouts[] = {
 	{ "H[]",  deck },                   /* Master on left, slaves in monocle-like mode on right */
 	{ "[M]",  monocle },                /* All windows on top of eachother */
 
+	{ "HHH",  gaplessgrid },
 	{ "|M|",  centeredmaster },         /* Master in middle, slaves on sides */
 
 	{ "><>",  NULL },                   /* no layout function means floating behavior */
@@ -94,11 +95,12 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,           XK_b, setlayout, {.v = &layouts[1]} }, /* bstack */
 	{ MODKEY|ControlMask,           XK_o, setlayout, {.v = &layouts[2]} }, /* spiral */
 	{ MODKEY|ControlMask|ShiftMask, XK_o, setlayout, {.v = &layouts[3]} }, /* dwindle */
-	{ MODKEY|ControlMask|ShiftMask,           XK_m, setlayout, {.v = &layouts[4]} }, /* deck */
+	{ MODKEY|ControlMask|ShiftMask, XK_m, setlayout, {.v = &layouts[4]} }, /* deck */
 	{ MODKEY|ControlMask,           XK_m, setlayout, {.v = &layouts[5]} }, /* monocle */
-	{ MODKEY|ControlMask,           XK_i, setlayout, {.v = &layouts[6]} }, /* centeredmaster */
-	{ MODKEY|ControlMask,           XK_p, setlayout, {.v = &layouts[7]} }, /* centeredfloatingmaster */
-	{ MODKEY|ControlMask|ShiftMask, XK_p, setlayout, {.v = &layouts[8]} }, /* centeredfloatingmaster */
+	{ MODKEY|ControlMask,           XK_i, setlayout, {.v = &layouts[6]} }, /* gaplessgrid */
+	{ MODKEY|ControlMask|ShiftMask, XK_i, setlayout, {.v = &layouts[7]} }, /* centeredmaster */
+	{ MODKEY|ControlMask,           XK_p, setlayout, {.v = &layouts[8]} }, /* centeredfloatingmaster */
+	{ MODKEY|ControlMask|ShiftMask, XK_p, setlayout, {.v = &layouts[9]} }, /* centeredfloatingmaster */
 
 	/* window manager */
 	{ MODKEY,           XK_b,     togglebar,      {0} },
@@ -156,6 +158,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[3]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },

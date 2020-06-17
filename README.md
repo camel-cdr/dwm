@@ -21,7 +21,7 @@ For color emoji support install libxft with the bgra patch.
 
 ### On Arch based systems
 ```sh
-git clone https://aur.archlinux.org/packages/libxft-bgra/
+git clone https://aur.archlinux.org/libxft-bgra.git
 cd libxft-bgra
 # Libxft-bgra isn't properly packaged, its therefore needed to replace the architecture manually.
 # This can be done by replacing <<ARCH>> with your architecture and runnung the following command:
@@ -31,8 +31,8 @@ makepkg -si
 
 ### Other
 ```sh
-git clone https://gitlab.com/zanc/xft
-./configure && sudo make instal
+git clone --depth=1 https://gitlab.com/zanc/xft
+cd xft && ./configure && sudo make instal
 sudo ldconfig && reboot
 ```
 

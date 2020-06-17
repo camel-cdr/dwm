@@ -23,7 +23,7 @@ dwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
 
 clean:
-	rm -f dwm ${OBJ} dwm-${VERSION}.tar.gz
+	rm -f dwm ${OBJ}
 
 install: all
 	mkdir -p ${DESTDIR}${PREFIX}/bin
