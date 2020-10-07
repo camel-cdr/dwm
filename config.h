@@ -11,8 +11,8 @@ static const int smartgaps          = 0;  /* no outer gap, untill there are 'sma
 static const int showbar            = 1;  /* 0 means no bar */
 static const int topbar             = 1;  /* 0 means bottom bar */
 
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char *fonts[]          = { "monospace:size=12:antialias=true:autohint=true" };
+static const char dmenufont[]       = "monospace:size=12:antialias=true:autohint=true";
 static const char col_normbg[]      = "#222222";
 static const char col_normfg[]      = "#bbbbbb";
 static const char col_selfg[]       = "#eeeeee";
@@ -32,7 +32,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance  title tags mask iscentered isfloating isterminal noswallow monitor */
-	{ "Gimp",     NULL,     NULL, 0,        0,         1,         0,         0,       -1 },
+	/* { "Gimp",     NULL,     NULL, 0,        0,         1,         0,         0,       -1 }, */
 	{ "st",       NULL,     NULL, 0,        0,         0,         1,        -1,       -1 },
 	{ "floating", NULL,     NULL, 0,        1,         1,         0,         0,       -1 }
 };

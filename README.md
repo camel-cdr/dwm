@@ -11,8 +11,6 @@
 
 ## Install
 ```sh
-git clone https://gitlab.com/CamelCoder/dwm
-cd dwm
 sudo make clean install
 ```
 
