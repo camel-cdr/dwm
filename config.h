@@ -8,7 +8,7 @@ static int enablegaps               = 0;  /* enables gaps, used by togglegaps */
 static const unsigned int gapp      = 15; /* gap between windows */
 static const unsigned int gapinc    = 5;  /* outer gap between windows and screen edge */
 static const int smartgaps          = 0;  /* no outer gap, untill there are 'smargaps' open windows */
-static const int showbar            = 1;  /* 0 means no bar */
+static const int showbar            = 0;  /* 0 means no bar */
 static const int topbar             = 1;  /* 0 means bottom bar */
 
 static const char *fonts[]          = { "monospace:size=12:antialias=true:autohint=true" };
@@ -69,6 +69,7 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+#define HOLDBARKEY XK_Super_L
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -103,12 +104,13 @@ static Key keys[] = {
 	{ MODKEY|ControlMask|ShiftMask, XK_p, setlayout, {.v = &layouts[9]} }, /* centeredfloatingmaster */
 
 	/* window manager */
-	{ MODKEY,           XK_b,     togglebar,      {0} },
-	{ MODKEY,           XK_space, zoom,           {0} },
-	{ MODKEY|ShiftMask, XK_space, togglefloating, {0} },
-	{ MODKEY,           XK_Tab,   view,           {0} },
-	{ MODKEY,           XK_q,     killclient,     {0} },
-	{ MODKEY|ShiftMask, XK_q,     quit,           {0} },
+	{ MODKEY,           XK_b,       togglebar,      {0} },
+	{ 0,                HOLDBARKEY, holdbar,        {0} },
+	{ MODKEY,           XK_space,   zoom,           {0} },
+	{ MODKEY|ShiftMask, XK_space,   togglefloating, {0} },
+	{ MODKEY,           XK_Tab,     view,           {0} },
+	{ MODKEY,           XK_q,       killclient,     {0} },
+	{ MODKEY|ShiftMask, XK_q,       quit,           {0} },
 
 	{ MODKEY,           XK_j, focusstack, {.i = +1 } },
 	{ MODKEY,           XK_k, focusstack, {.i = -1 } },

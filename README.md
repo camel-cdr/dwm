@@ -8,6 +8,7 @@
 * stacker
 * swallow
 * vanitygaps
+* holdbar
 
 ## Install
 ```sh
