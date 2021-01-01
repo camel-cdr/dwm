@@ -188,7 +188,6 @@ static void grabbuttons(Client *c, int focused);
 static void grabkeys(void);
 static void incnmaster(const Arg *arg);
 static void keypress(XEvent *e);
-static void keyrelease(XEvent *e);
 static void killclient(const Arg *arg);
 static void manage(Window w, XWindowAttributes *wa);
 static void mappingnotify(XEvent *e);
@@ -223,7 +222,6 @@ static int stackpos(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void togglebar(const Arg *arg);
-static void holdbar(const Arg *arg);
 static void togglefloating(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggleview(const Arg *arg);
@@ -274,7 +272,6 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[Expose] = expose,
 	[FocusIn] = focusin,
 	[KeyPress] = keypress,
-	[KeyRelease] = keyrelease,
 	[MappingNotify] = mappingnotify,
 	[MapRequest] = maprequest,
 	[MotionNotify] = motionnotify,
@@ -1092,29 +1089,6 @@ keypress(XEvent *e)
 }
 
 void
-keyrelease(XEvent *e)
-{
-	if (XEventsQueued(dpy, QueuedAfterReading)) {
-		XEvent ne;
-		XPeekEvent(dpy, &ne);
-		if (ne.type == KeyPress && ne.xkey.time == e->xkey.time &&
-		    ne.xkey.keycode == e->xkey.keycode) {
-			XNextEvent(dpy, &ne);
-			return;
-		}
-	}
-	if (e->xkey.keycode == XKeysymToKeycode(dpy, HOLDBARKEY) &&
-	    selmon->showbar == 2) {
-		selmon->showbar = 0;
-		updatebarpos(selmon);
-		XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by,
-		                  selmon->ww, bh);
-		arrange(selmon);
-	}
-}
-
-
-void
 killclient(const Arg *arg)
 {
 	if (!selmon->sel)
@@ -1818,18 +1792,7 @@ tagmon(const Arg *arg)
 void
 togglebar(const Arg *arg)
 {
-	selmon->showbar = (selmon->showbar == 2 ? 1 : !selmon->showbar);
-	updatebarpos(selmon);
-	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
-	arrange(selmon);
-}
-
-void
-holdbar(const Arg *arg)
-{
-	if (selmon->showbar)
-		return;
-	selmon->showbar = 2;
+	selmon->showbar = !selmon->showbar;
 	updatebarpos(selmon);
 	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
 	arrange(selmon);
@@ -1998,8 +1961,6 @@ updatebarpos(Monitor *m)
 	} else
 		m->by = -bh;
 }
-
-
 
 void
 updateclientlist()
