@@ -65,6 +65,7 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod4Mask
+#define MODKEY_MR Mod3Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -85,7 +86,6 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask, XK_Return, spawn, SHCMD("$TERMINAL") },
 	{ MODKEY,           XK_u,      spawn, SHCMD("dwm-samedir -c floating") },
 	{ MODKEY|ShiftMask, XK_u,      spawn, SHCMD("$TERMINAL -c floating") },
-
 	{ MODKEY,           XK_w, spawn, SHCMD("$BROWSER") },
 	{ MODKEY,           XK_m, spawn, SHCMD("$CLIP") },
 	{ MODKEY,           XK_x, spawn, SHCMD("$LOCK") },
@@ -111,6 +111,17 @@ static Key keys[] = {
 	{ MODKEY,           XK_q,       killclient,     {0} },
 	{ MODKEY|ShiftMask, XK_q,       quit,           {0} },
 
+	/* resize */
+	{ MODKEY_MR,           XK_j, moveresize, {.v = (int[]){0, 25,0,0 }}},
+	{ MODKEY_MR,           XK_k, moveresize, {.v = (int[]){0,-25,0,0 }}},
+	{ MODKEY_MR,           XK_l, moveresize, {.v = (int[]){ 25,0,0,0 }}},
+	{ MODKEY_MR,           XK_h, moveresize, {.v = (int[]){-25,0,0,0 }}},
+	{ MODKEY_MR|ShiftMask, XK_j, moveresize, {.v = (int[]){0,0,0, 25 }}},
+	{ MODKEY_MR|ShiftMask, XK_k, moveresize, {.v = (int[]){0,0,0,-25 }}},
+	{ MODKEY_MR|ShiftMask, XK_l, moveresize, {.v = (int[]){0,0, 25,0 }}},
+	{ MODKEY_MR|ShiftMask, XK_h, moveresize, {.v = (int[]){0,0,-25,0 }}},
+
+	/* focus */
 	{ MODKEY,           XK_j, focusstack, {.i = +1 } },
 	{ MODKEY,           XK_k, focusstack, {.i = -1 } },
 	{ MODKEY|ShiftMask, XK_j, pushstack,  {.i = +1 } },
@@ -120,16 +131,19 @@ static Key keys[] = {
 	{ MODKEY,           XK_h, setmfact,   {.f = -0.05} },
 	{ MODKEY,           XK_l, setmfact,   {.f = +0.05} },
 
+	/* gap */
 	{ MODKEY,             XK_bracketleft,  incgaps,     {.i = +gapinc } },
 	{ MODKEY,             XK_bracketright, incgaps,     {.i = -gapinc } },
 	{ MODKEY|ShiftMask,   XK_g,            defaultgaps, {0} },
 	{ MODKEY,             XK_g,            togglegaps,  {0} },
 
+	/* multi monitor */
 	{ MODKEY,           XK_comma,  focusmon, {.i = -1 } },
 	{ MODKEY,           XK_period, focusmon, {.i = +1 } },
 	{ MODKEY|ShiftMask, XK_comma,  tagmon,   {.i = -1 } },
 	{ MODKEY|ShiftMask, XK_period, tagmon,   {.i = +1 } },
 
+	/* tags */
 	{ MODKEY,                 XK_0, view, {.ui = ~0 } },
 	{ MODKEY|ShiftMask,       XK_0, tag,  {.ui = ~0 } },
 	TAGKEYS(            XK_1, 0)
