@@ -1501,6 +1501,7 @@ scan(void)
 	char swin[256];
 	Window d1, d2, *wins = NULL;
 	XWindowAttributes wa;
+	system(autostart);
 
 	if (XQueryTree(dpy, root, &d1, &d2, &wins, &num)) {
 		for (i = 0; i < num; i++) {

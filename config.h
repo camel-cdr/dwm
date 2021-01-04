@@ -6,7 +6,7 @@ static const unsigned int snap      = 32; /* snap pixel */
 static const int swallowfloating    = 0;  /* 1 means swallow floating windows by default */
 static int enablegaps               = 0;  /* enables gaps, used by togglegaps */
 static const unsigned int gapp      = 15; /* gap between windows */
-static const unsigned int gapinc    = 5;  /* outer gap between windows and screen edge */
+static const unsigned int gapinc    = 10; /* outer gap between windows and screen edge */
 static const int smartgaps          = 0;  /* no outer gap, untill there are 'smargaps' open windows */
 static const int showbar            = 0;  /* 0 means no bar */
 static const int topbar             = 1;  /* 0 means bottom bar */
@@ -23,6 +23,8 @@ static const char *colors[][3]      = {
 	[SchemeSel]  = { col_selfg,  col_selbg,  col_selbg },
 };
 
+static const char autostart[] = "$HOME/.dwmstart";
+
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -32,7 +34,6 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance  title tags mask iscentered isfloating isterminal noswallow monitor */
-	/* { "Gimp",     NULL,     NULL, 0,        0,         1,         0,         0,       -1 }, */
 	{ "st",       NULL,     NULL, 0,        0,         0,         1,        -1,       -1 },
 	{ "floating", NULL,     NULL, 0,        1,         1,         0,         0,       -1 }
 };
