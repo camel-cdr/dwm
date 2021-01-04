@@ -78,14 +78,19 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_normbg, "-nf", col_normfg, "-sb", col_selbg, "-sf", col_selfg, NULL };
+static const char scratchpadname[] = "scratchpad";
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 
 static Key keys[] = {
 	/* applications */
-	{ MODKEY,           XK_r,      spawn, {.v = dmenucmd } },
+	{ MODKEY,           XK_r, spawn,         {.v = dmenucmd } },
+	{ MODKEY,           XK_s, togglescratch, {.v = scratchpadcmd } },
+
 	{ MODKEY,           XK_Return, spawn, SHCMD("dwm-samedir") },
 	{ MODKEY|ShiftMask, XK_Return, spawn, SHCMD("$TERMINAL") },
 	{ MODKEY,           XK_u,      spawn, SHCMD("dwm-samedir -c floating") },
 	{ MODKEY|ShiftMask, XK_u,      spawn, SHCMD("$TERMINAL -c floating") },
+
 	{ MODKEY,           XK_w, spawn, SHCMD("$BROWSER") },
 	{ MODKEY,           XK_m, spawn, SHCMD("$CLIP") },
 	{ MODKEY,           XK_x, spawn, SHCMD("$LOCK") },
