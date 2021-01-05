@@ -220,6 +220,7 @@ static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
 static void sigchld(int unused);
 static void spawn(const Arg *arg);
+static void layoutmenu(const Arg *arg);
 static int stackpos(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
@@ -1894,6 +1895,29 @@ spawn(const Arg *arg)
 		perror(" failed");
 		exit(EXIT_SUCCESS);
 	}
+}
+
+void
+layoutmenu(const Arg *arg)
+{
+	FILE *p;
+	char c[256], *s;
+	unsigned i;
+
+	if (!(p = popen(layoutmenu_cmd, "r")))
+		 return;
+	s = fgets(c, sizeof(c), p);
+	pclose(p);
+
+	if (!s)
+		return;
+
+	sscanf(s, "%*[^0-9]%u", &i);
+
+	if (i >= LENGTH(layouts))
+		return;
+
+	setlayout(&((Arg) { .v = &layouts[i] }));
 }
 
 int

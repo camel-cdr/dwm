@@ -1,0 +1,17 @@
+#!/bin/sh
+
+cat <<EOF | dmenu -l 12
+tile                   0  | Mod4-Ctrl-t
+bottomtile             1  | Mod4-Ctrl-T
+monocle                2  | Mod4-Ctrl-m
+deck                   3  | Mod4-Ctrl-M
+grid                   4  | Mod4-Ctrl-u
+centeredmaster         5  | Mod4-Ctrl-U
+verticalgrid           6  | Mod4-Ctrl-i
+horizontalgrid         7  | Mod4-Ctrl-I
+spiral                 8  | Mod4-Ctrl-o
+dwindle                9  | Mod4-Ctrl-O
+floating               10 | Mod4-Ctrl-p
+centeredfloatingmaster 11 | Mod4-Ctrl-P
+EOF
+

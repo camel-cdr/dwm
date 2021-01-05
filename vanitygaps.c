@@ -15,7 +15,6 @@ static void grid(Monitor *m);
 static void monocle(Monitor *m);
 static void tile(Monitor *);
 
-
 /* Key binding functions */
 static void defaultgaps(const Arg *arg);
 static void incgaps(const Arg *arg);
@@ -23,7 +22,6 @@ static void togglegaps(const Arg *arg);
 
 /* Layouts */
 static void bstack(Monitor *m);
-static void bstackhoriz(Monitor *m);
 static void centeredmaster(Monitor *m);
 static void centeredfloatingmaster(Monitor *m);
 static void deck(Monitor *m);
@@ -32,7 +30,6 @@ static void fibonacci(Monitor *m, int s);
 static void gaplessgrid(Monitor *m);
 static void grid(Monitor *m);
 static void horizgrid(Monitor *m);
-static void nrowgrid(Monitor *m);
 static void spiral(Monitor *m);
 static void tile(Monitor *m);
 
@@ -130,44 +127,6 @@ bstack(Monitor *m)
 		} else {
 			resize(c, sx, sy, sw * (1 / sfacts) - (2*c->bw), sh - (2*c->bw), 0);
 			sx += WIDTH(c) + iv;
-		}
-	}
-}
-
-static void
-bstackhoriz(Monitor *m)
-{
-	unsigned int i, n;
-	int mx, my, mh, mw, sx = 0, sy = 0, sh = 0, sw = 0, oh, ov, ih, iv;
-	float mfacts, sfacts;
-	Client *c;
-
-	getgaps(m, &oh, &ov, &ih, &iv, &n, &mfacts, &sfacts);
-
-	if (n == 0)
-		return;
-
-	sx = mx = m->wx + ov;
-	sy = my = m->wy + oh;
-	sh = mh = m->wh - 2*oh;
-	sw = mw = m->ww - 2*ov - iv * (MIN(n, m->nmaster) - 1);
-
-	if (m->nmaster && n > m->nmaster) {
-		sh = (mh - ih) * (1 - m->mfact);
-		mh = (mh - ih) * m->mfact;
-		sx = mx;
-		sy = my + mh + ih;
-		sh = m->wh - mh - 2*oh - ih * (n - m->nmaster);
-		sw = m->ww - 2*ov;
-	}
-
-	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
-		if (i < m->nmaster) {
-			resize(c, mx, my, mw * (1 / mfacts) - (2*c->bw), mh - (2*c->bw), 0);
-			mx += WIDTH(c) + iv;
-		} else {
-			resize(c, sx, sy, sw - (2*c->bw), sh * (1 / sfacts) - (2*c->bw), 0);
-			sy += HEIGHT(c) + ih;
 		}
 	}
 }

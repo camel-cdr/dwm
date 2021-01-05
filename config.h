@@ -12,7 +12,6 @@ static const int showbar            = 0;  /* 0 means no bar */
 static const int topbar             = 1;  /* 0 means bottom bar */
 
 static const char *fonts[]          = { "monospace:size=12:antialias=true:autohint=true" };
-static const char dmenufont[]       = "monospace:size=12:antialias=true:autohint=true";
 static const char col_normbg[]      = "#222222";
 static const char col_normfg[]      = "#bbbbbb";
 static const char col_selfg[]       = "#eeeeee";
@@ -42,25 +41,20 @@ static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] 
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 
-/* layout(s) */
 #include "vanitygaps.c"
 static const Layout layouts[] = {
-	/* symbol     arrange function */
-	{ "[]=",  tile },                   /* Default: Master on left, slaves on right */
-	{ "TTT",  bstack },                 /* Master on top, slaves on bottom */
-
-	{ "[@]",  spiral },                 /* Fibonacci spiral */
-	{ "[\\]", dwindle },                /* Decreasing in size right and leftward */
-
-
-	{ "H[]",  deck },                   /* Master on left, slaves in monocle-like mode on right */
-	{ "[M]",  monocle },                /* All windows on top of eachother */
-
+	{ "[]=",  tile },
+	{ "TTT",  bstack },
+	{ "[M]",  monocle },
+	{ "H[]",  deck },
+	{ "HH ",  grid },
+	{ "|M|",  centeredmaster },
 	{ "HHH",  gaplessgrid },
-	{ "|M|",  centeredmaster },         /* Master in middle, slaves on sides */
-
-	{ "><>",  NULL },                   /* no layout function means floating behavior */
-	{ ">M>",  centeredfloatingmaster }, /* Same but master floats */
+	{ "###",  horizgrid },
+	{ "[@]",  spiral },
+	{ "[\\]", dwindle },
+	{ "><>",  NULL },
+	{ ">M>",  centeredfloatingmaster },
 };
 
 /* key definitions */
@@ -77,9 +71,10 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_normbg, "-nf", col_normfg, "-sb", col_selbg, "-sf", col_selfg, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
+static const char layoutmenu_cmd[] = "dwm-layoutmenu";
 
 static Key keys[] = {
 	/* applications */
@@ -97,16 +92,19 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask, XK_x, spawn, SHCMD("xkill") },
 
 	/* layouts */
-	{ MODKEY|ControlMask,           XK_t, setlayout, {.v = &layouts[0]} }, /* tile */
-	{ MODKEY|ControlMask,           XK_b, setlayout, {.v = &layouts[1]} }, /* bstack */
-	{ MODKEY|ControlMask,           XK_o, setlayout, {.v = &layouts[2]} }, /* spiral */
-	{ MODKEY|ControlMask|ShiftMask, XK_o, setlayout, {.v = &layouts[3]} }, /* dwindle */
-	{ MODKEY|ControlMask|ShiftMask, XK_m, setlayout, {.v = &layouts[4]} }, /* deck */
-	{ MODKEY|ControlMask,           XK_m, setlayout, {.v = &layouts[5]} }, /* monocle */
-	{ MODKEY|ControlMask,           XK_i, setlayout, {.v = &layouts[6]} }, /* gaplessgrid */
-	{ MODKEY|ControlMask|ShiftMask, XK_i, setlayout, {.v = &layouts[7]} }, /* centeredmaster */
-	{ MODKEY|ControlMask,           XK_p, setlayout, {.v = &layouts[8]} }, /* centeredfloatingmaster */
-	{ MODKEY|ControlMask|ShiftMask, XK_p, setlayout, {.v = &layouts[9]} }, /* centeredfloatingmaster */
+	{ MODKEY,                       XK_a, layoutmenu, {0} },
+	{ MODKEY|ControlMask,           XK_t, setlayout, {.v = &layouts[0]} },  /* tile */
+	{ MODKEY|ControlMask|ShiftMask, XK_t, setlayout, {.v = &layouts[1]} },  /* bottomtile  */
+	{ MODKEY|ControlMask,           XK_m, setlayout, {.v = &layouts[2]} },  /* monocle */
+	{ MODKEY|ControlMask|ShiftMask, XK_m, setlayout, {.v = &layouts[3]} },  /* deck */
+	{ MODKEY|ControlMask,           XK_u, setlayout, {.v = &layouts[4]} },  /* grid */
+	{ MODKEY|ControlMask|ShiftMask, XK_u, setlayout, {.v = &layouts[5]} },  /* centeredmaster */
+	{ MODKEY|ControlMask,           XK_i, setlayout, {.v = &layouts[6]} },  /* verticalgrid */
+	{ MODKEY|ControlMask,           XK_i, setlayout, {.v = &layouts[7]} },  /* horizontalgrid */
+	{ MODKEY|ControlMask,           XK_o, setlayout, {.v = &layouts[8]} },  /* spiral */
+	{ MODKEY|ControlMask|ShiftMask, XK_o, setlayout, {.v = &layouts[9]} },  /* dwindle */
+	{ MODKEY|ControlMask,           XK_p, setlayout, {.v = &layouts[10]} }, /* floating */
+	{ MODKEY|ControlMask|ShiftMask, XK_p, setlayout, {.v = &layouts[11]} }, /* centeredfloatingmaster */
 
 	/* window manager */
 	{ MODKEY,           XK_b,       togglebar,      {0} },
@@ -133,6 +131,23 @@ static Key keys[] = {
 	{ MODKEY_MR|ControlMask|ShiftMask, XK_k, moveresizeedge, {.v = "T"} },
 	{ MODKEY_MR|ControlMask|ShiftMask, XK_h, moveresizeedge, {.v = "L"} },
 	{ MODKEY_MR|ControlMask|ShiftMask, XK_l, moveresizeedge, {.v = "R"} },
+
+	{ MODKEY,           XK_KP_Down,  moveresize, {.v = (int[]){0, 25,0,0 }} },
+	{ MODKEY,           XK_KP_Up,    moveresize, {.v = (int[]){0,-25,0,0 }} },
+	{ MODKEY,           XK_KP_Right, moveresize, {.v = (int[]){ 25,0,0,0 }} },
+	{ MODKEY,           XK_KP_Left,  moveresize, {.v = (int[]){-25,0,0,0 }} },
+	{ MODKEY|ShiftMask, XK_KP_Down,  moveresize, {.v = (int[]){0,0,0, 25 }} },
+	{ MODKEY|ShiftMask, XK_KP_Up,    moveresize, {.v = (int[]){0,0,0,-25 }} },
+	{ MODKEY|ShiftMask, XK_KP_Right, moveresize, {.v = (int[]){0,0, 25,0 }} },
+	{ MODKEY|ShiftMask, XK_KP_Left,  moveresize, {.v = (int[]){0,0,-25,0 }} },
+	{ MODKEY|ControlMask,           XK_KP_Down,  moveresizeedge, {.v = "b"} },
+	{ MODKEY|ControlMask,           XK_KP_Up,    moveresizeedge, {.v = "t"} },
+	{ MODKEY|ControlMask,           XK_KP_Left,  moveresizeedge, {.v = "l"} },
+	{ MODKEY|ControlMask,           XK_KP_Right, moveresizeedge, {.v = "r"} },
+	{ MODKEY|ControlMask|ShiftMask, XK_KP_Down,  moveresizeedge, {.v = "B"} },
+	{ MODKEY|ControlMask|ShiftMask, XK_KP_Up,    moveresizeedge, {.v = "T"} },
+	{ MODKEY|ControlMask|ShiftMask, XK_KP_Left,  moveresizeedge, {.v = "L"} },
+	{ MODKEY|ControlMask|ShiftMask, XK_KP_Right, moveresizeedge, {.v = "R"} },
 
 	/* focus */
 	{ MODKEY,           XK_j, focusstack, {.i = +1 } },
