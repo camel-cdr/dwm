@@ -73,7 +73,7 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
 static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
+static const char *scratchpadcmd[] = { "$TERMINAL", "-t", scratchpadname, "-g", "120x34", NULL };
 static const char layoutmenu_cmd[] = "dwm-layoutmenu";
 
 static Key keys[] = {
@@ -107,47 +107,12 @@ static Key keys[] = {
 	{ MODKEY|ControlMask|ShiftMask, XK_p, setlayout, {.v = &layouts[11]} }, /* centeredfloatingmaster */
 
 	/* window manager */
+	{ MODKEY,           XK_q,       killclient,     {0} },
+	{ MODKEY|ShiftMask, XK_q,       quit,           {0} },
 	{ MODKEY,           XK_b,       togglebar,      {0} },
 	{ MODKEY,           XK_space,   zoom,           {0} },
 	{ MODKEY|ShiftMask, XK_space,   togglefloating, {0} },
 	{ MODKEY,           XK_Tab,     view,           {0} },
-	{ MODKEY,           XK_q,       killclient,     {0} },
-	{ MODKEY|ShiftMask, XK_q,       quit,           {0} },
-
-	/* resize */
-	{ MODKEY_MR,           XK_j, moveresize, {.v = (int[]){0, 25,0,0 }} },
-	{ MODKEY_MR,           XK_k, moveresize, {.v = (int[]){0,-25,0,0 }} },
-	{ MODKEY_MR,           XK_l, moveresize, {.v = (int[]){ 25,0,0,0 }} },
-	{ MODKEY_MR,           XK_h, moveresize, {.v = (int[]){-25,0,0,0 }} },
-	{ MODKEY_MR|ShiftMask, XK_j, moveresize, {.v = (int[]){0,0,0, 25 }} },
-	{ MODKEY_MR|ShiftMask, XK_k, moveresize, {.v = (int[]){0,0,0,-25 }} },
-	{ MODKEY_MR|ShiftMask, XK_l, moveresize, {.v = (int[]){0,0, 25,0 }} },
-	{ MODKEY_MR|ShiftMask, XK_h, moveresize, {.v = (int[]){0,0,-25,0 }} },
-	{ MODKEY_MR|ControlMask,           XK_j, moveresizeedge, {.v = "b"} },
-	{ MODKEY_MR|ControlMask,           XK_k, moveresizeedge, {.v = "t"} },
-	{ MODKEY_MR|ControlMask,           XK_h, moveresizeedge, {.v = "l"} },
-	{ MODKEY_MR|ControlMask,           XK_l, moveresizeedge, {.v = "r"} },
-	{ MODKEY_MR|ControlMask|ShiftMask, XK_j, moveresizeedge, {.v = "B"} },
-	{ MODKEY_MR|ControlMask|ShiftMask, XK_k, moveresizeedge, {.v = "T"} },
-	{ MODKEY_MR|ControlMask|ShiftMask, XK_h, moveresizeedge, {.v = "L"} },
-	{ MODKEY_MR|ControlMask|ShiftMask, XK_l, moveresizeedge, {.v = "R"} },
-
-	{ MODKEY,           XK_KP_Down,  moveresize, {.v = (int[]){0, 25,0,0 }} },
-	{ MODKEY,           XK_KP_Up,    moveresize, {.v = (int[]){0,-25,0,0 }} },
-	{ MODKEY,           XK_KP_Right, moveresize, {.v = (int[]){ 25,0,0,0 }} },
-	{ MODKEY,           XK_KP_Left,  moveresize, {.v = (int[]){-25,0,0,0 }} },
-	{ MODKEY|ShiftMask, XK_KP_Down,  moveresize, {.v = (int[]){0,0,0, 25 }} },
-	{ MODKEY|ShiftMask, XK_KP_Up,    moveresize, {.v = (int[]){0,0,0,-25 }} },
-	{ MODKEY|ShiftMask, XK_KP_Right, moveresize, {.v = (int[]){0,0, 25,0 }} },
-	{ MODKEY|ShiftMask, XK_KP_Left,  moveresize, {.v = (int[]){0,0,-25,0 }} },
-	{ MODKEY|ControlMask,           XK_KP_Down,  moveresizeedge, {.v = "b"} },
-	{ MODKEY|ControlMask,           XK_KP_Up,    moveresizeedge, {.v = "t"} },
-	{ MODKEY|ControlMask,           XK_KP_Left,  moveresizeedge, {.v = "l"} },
-	{ MODKEY|ControlMask,           XK_KP_Right, moveresizeedge, {.v = "r"} },
-	{ MODKEY|ControlMask|ShiftMask, XK_KP_Down,  moveresizeedge, {.v = "B"} },
-	{ MODKEY|ControlMask|ShiftMask, XK_KP_Up,    moveresizeedge, {.v = "T"} },
-	{ MODKEY|ControlMask|ShiftMask, XK_KP_Left,  moveresizeedge, {.v = "L"} },
-	{ MODKEY|ControlMask|ShiftMask, XK_KP_Right, moveresizeedge, {.v = "R"} },
 
 	/* focus */
 	{ MODKEY,           XK_j, focusstack, {.i = +1 } },
@@ -159,17 +124,52 @@ static Key keys[] = {
 	{ MODKEY,           XK_h, setmfact,   {.f = -0.05} },
 	{ MODKEY,           XK_l, setmfact,   {.f = +0.05} },
 
-	/* gap */
-	{ MODKEY,             XK_bracketleft,  incgaps,     {.i = +gapinc } },
-	{ MODKEY,             XK_bracketright, incgaps,     {.i = -gapinc } },
-	{ MODKEY|ShiftMask,   XK_g,            defaultgaps, {0} },
-	{ MODKEY,             XK_g,            togglegaps,  {0} },
-
 	/* multi monitor */
 	{ MODKEY,           XK_comma,  focusmon, {.i = -1 } },
 	{ MODKEY,           XK_period, focusmon, {.i = +1 } },
 	{ MODKEY|ShiftMask, XK_comma,  tagmon,   {.i = -1 } },
 	{ MODKEY|ShiftMask, XK_period, tagmon,   {.i = +1 } },
+
+	/* gap */
+	{ MODKEY,             XK_g,            togglegaps,  {0} },
+	{ MODKEY|ShiftMask,   XK_g,            defaultgaps, {0} },
+	{ MODKEY,             XK_bracketleft,  incgaps,     {.i = -gapinc } },
+	{ MODKEY,             XK_bracketright, incgaps,     {.i = +gapinc } },
+
+	/* resize */
+	{ MODKEY_MR,           XK_k, moveresize, {.v = (int[]){0,-25,0,0 }} },
+	{ MODKEY_MR,           XK_j, moveresize, {.v = (int[]){0, 25,0,0 }} },
+	{ MODKEY_MR,           XK_h, moveresize, {.v = (int[]){-25,0,0,0 }} },
+	{ MODKEY_MR,           XK_l, moveresize, {.v = (int[]){ 25,0,0,0 }} },
+	{ MODKEY_MR|ShiftMask, XK_k, moveresize, {.v = (int[]){0,0,0,-25 }} },
+	{ MODKEY_MR|ShiftMask, XK_j, moveresize, {.v = (int[]){0,0,0, 25 }} },
+	{ MODKEY_MR|ShiftMask, XK_h, moveresize, {.v = (int[]){0,0,-25,0 }} },
+	{ MODKEY_MR|ShiftMask, XK_l, moveresize, {.v = (int[]){0,0, 25,0 }} },
+	{ MODKEY_MR|ControlMask,           XK_k, moveresizeedge, {.v = "t"} },
+	{ MODKEY_MR|ControlMask,           XK_j, moveresizeedge, {.v = "b"} },
+	{ MODKEY_MR|ControlMask,           XK_l, moveresizeedge, {.v = "r"} },
+	{ MODKEY_MR|ControlMask,           XK_h, moveresizeedge, {.v = "l"} },
+	{ MODKEY_MR|ControlMask|ShiftMask, XK_k, moveresizeedge, {.v = "T"} },
+	{ MODKEY_MR|ControlMask|ShiftMask, XK_j, moveresizeedge, {.v = "B"} },
+	{ MODKEY_MR|ControlMask|ShiftMask, XK_l, moveresizeedge, {.v = "R"} },
+	{ MODKEY_MR|ControlMask|ShiftMask, XK_h, moveresizeedge, {.v = "L"} },
+
+	{ MODKEY,           XK_KP_Up,    moveresize, {.v = (int[]){0,-25,0,0 }} },
+	{ MODKEY,           XK_KP_Down,  moveresize, {.v = (int[]){0, 25,0,0 }} },
+	{ MODKEY,           XK_KP_Left,  moveresize, {.v = (int[]){-25,0,0,0 }} },
+	{ MODKEY,           XK_KP_Right, moveresize, {.v = (int[]){ 25,0,0,0 }} },
+	{ MODKEY|ShiftMask, XK_KP_Up,    moveresize, {.v = (int[]){0,0,0,-25 }} },
+	{ MODKEY|ShiftMask, XK_KP_Down,  moveresize, {.v = (int[]){0,0,0, 25 }} },
+	{ MODKEY|ShiftMask, XK_KP_Left,  moveresize, {.v = (int[]){0,0,-25,0 }} },
+	{ MODKEY|ShiftMask, XK_KP_Right, moveresize, {.v = (int[]){0,0, 25,0 }} },
+	{ MODKEY|ControlMask,           XK_KP_Up,    moveresizeedge, {.v = "t"} },
+	{ MODKEY|ControlMask,           XK_KP_Down,  moveresizeedge, {.v = "b"} },
+	{ MODKEY|ControlMask,           XK_KP_Right, moveresizeedge, {.v = "r"} },
+	{ MODKEY|ControlMask,           XK_KP_Left,  moveresizeedge, {.v = "l"} },
+	{ MODKEY|ControlMask|ShiftMask, XK_KP_Up,    moveresizeedge, {.v = "T"} },
+	{ MODKEY|ControlMask|ShiftMask, XK_KP_Down,  moveresizeedge, {.v = "B"} },
+	{ MODKEY|ControlMask|ShiftMask, XK_KP_Right, moveresizeedge, {.v = "R"} },
+	{ MODKEY|ControlMask|ShiftMask, XK_KP_Left,  moveresizeedge, {.v = "L"} },
 
 	/* tags */
 	{ MODKEY,                 XK_0, view, {.ui = ~0 } },
